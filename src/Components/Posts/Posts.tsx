@@ -8,9 +8,6 @@ interface Props {
 }
 
 const Posts:React.FC<Props> = ({posts}) => {
-
-
-
   if (posts.length <= 0) {
     return (
       <div>
@@ -30,10 +27,6 @@ const Posts:React.FC<Props> = ({posts}) => {
       </div>
     )
   }
-
-
-
-
 };
 
 export default Posts;

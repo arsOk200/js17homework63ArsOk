@@ -34,6 +34,8 @@ const EditPost = () => {
     }
   }
 
+
+
   return (
     <div>
       {post && (

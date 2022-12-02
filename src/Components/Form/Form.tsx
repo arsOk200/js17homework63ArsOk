@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import {PostApi, PostMutation} from "../../type";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import axiosApi from "../../axiosApi";
 
 
 interface Props{
   onSubmit:(post:PostApi) => void;
   editPost?:PostApi;
+
 }
 
 const Form:React.FC<Props> = ({onSubmit, editPost}) => {
@@ -18,6 +19,8 @@ const Form:React.FC<Props> = ({onSubmit, editPost}) => {
     date: new Date().toString(),
   }
   const [post, setPost] = useState<PostMutation>(initialState);
+  const navigate = useNavigate();
+  const {id} = useParams();
 
   const onPostChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const {name, value} = e.target
@@ -26,19 +29,15 @@ const Form:React.FC<Props> = ({onSubmit, editPost}) => {
 
   const onFormSubmit = (e:React.FormEvent) => {
     e.preventDefault();
-    console.log(post);
     onSubmit(post);
   };
 
-   const {id} = useParams();
+
   const deletePost = async ()=> {
-    try {
-      await axiosApi.delete('/posts/' + id + '.json');
-    } finally {
-
-    }
-
+      await axiosApi.delete<PostApi>('/posts/' + id + '.json');
+      navigate('/');
   }
+
 
   return (
     <form className='container mt-3' onSubmit={onFormSubmit}>
@@ -58,7 +57,6 @@ const Form:React.FC<Props> = ({onSubmit, editPost}) => {
         {editPost ? (<button onClick={deletePost} className='btn btn-danger mt-2'>Delete</button>):(
           <button disabled className='btn btn-secondary mt-2'>Delete</button>
         )}
-
       </div>
 
 
